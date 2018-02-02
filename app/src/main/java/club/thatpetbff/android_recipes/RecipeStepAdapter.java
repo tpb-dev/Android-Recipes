@@ -98,11 +98,11 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
     @Override
     public void onBindViewHolder(RecipeStepAdapter.ViewHolder holder, int position)
     {
-        if(position == 0) {
+        if (position == 0) {
             holder.bind(this.ingredientList, listener, position);
         } else {
-            Step step = stepList.get(position);
-            holder.bind(step, listener, position);
+            Step step = stepList.get(position - 1);
+            holder.bind(step, listener, position - 1);
         }
 
         // This is how we use Picasso to load images from the internet.
@@ -114,7 +114,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return (stepList == null) ? 0  : stepList.size();
+        return (stepList == null) ? 0 : stepList.size() + 1;
     }
 
     @Override

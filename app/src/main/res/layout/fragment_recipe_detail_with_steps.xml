@@ -2,6 +2,7 @@
 <!-- This is "Fragment B"-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ScrollView01"
     android:layout_marginTop="5dp"
     android:layout_gravity="center_vertical"
@@ -33,5 +34,11 @@
                 android:id="@+id/tvDetails"
                 android:layout_marginTop="0dp"
                 android:gravity="left"/>
+
+            <ImageView
+                android:id="@+id/thumbnailStepsView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+              />
         </LinearLayout>
 </ScrollView>

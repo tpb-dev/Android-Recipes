@@ -79,7 +79,7 @@ public class TestAllActivity {
     public void ClickOnStep() {
         goToDetailActivity();
         onView(withId(R.id.recyclerView))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
         //onView(withText("aa")).check(matches(isDisplayed()));
     }

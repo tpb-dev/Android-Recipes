@@ -36,7 +36,6 @@ public class RecipeIngredientFragment extends android.support.v4.app.Fragment  {
     Context mContext;
     private RecipeIngredientAdapter mAdapter;
     Gson gson = new Gson();
-    String position;
     List<Ingredient> ingredients;
 
     @Override
@@ -66,6 +65,8 @@ public class RecipeIngredientFragment extends android.support.v4.app.Fragment  {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ingredientRecyclerView);
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            View flContainerView2 = getActivity().findViewById(R.id.flContainer2);
+            flContainerView2.setVisibility(View.GONE);
             mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
         } else {
             mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
@@ -75,37 +76,43 @@ public class RecipeIngredientFragment extends android.support.v4.app.Fragment  {
         });
         mRecyclerView.setAdapter(mAdapter);
         if(savedInstanceState != null && savedInstanceState.getString("ingredients") != null) {
-            List<Ingredient> ingredients = gson.fromJson(savedInstanceState.getString("ingredients"), new TypeToken<List<Ingredient>>(){}.getType());
+            ingredients = gson.fromJson(savedInstanceState.getString("ingredients"), new TypeToken<List<Ingredient>>(){}.getType());
             mAdapter.setIngredientList(ingredients);
         } else {
-            mAdapter.setIngredientList(((DetailActivity)getActivity()).getIngredientList());
+            ingredients = ((DetailActivity)getActivity()).getIngredientList();
+            if(ingredients != null) {
+                mAdapter.setIngredientList(ingredients);
+            }
         }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+
+        /*
         RecipeStepFragment recipeStepFragment =  (RecipeStepFragment)getFragmentManager().findFragmentByTag("stepFragment");
         if(!recipeStepFragment.isVisible()) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        } */
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        /*
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        */
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        List<Ingredient> list = ((DetailActivity)getActivity()).getIngredientList();
         //Save the fragment's state here
-        if(list.size() >0 ) {
-            outState.putString("ingredients", gson.toJson(list));
+        if(ingredients != null && ingredients.size() >0 ) {
+            outState.putString("ingredients", gson.toJson(ingredients));
         }
     }
 

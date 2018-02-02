@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -37,6 +38,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import club.thatpetbff.android_recipes.R;
 import club.thatpetbff.android_recipes.Step;
@@ -48,6 +50,7 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
 
     String position;
     TextView tvDetails;
+    ImageView thumbnailView;
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
     Step step = null;
@@ -80,14 +83,20 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
         if(step != null) {
             tvDetails.setText(step.getDescription());
         }
+        if(step.getThumbnailURL().length() > 0) {
+            Picasso.with(getActivity().getApplicationContext()).load(step.getThumbnailURL()).into(thumbnailView);
+        } else {
+            if(thumbnailView != null)
+                thumbnailView.setVisibility(View.GONE);
+        }
         initializePlayer();
     }
 
     public void initializePlayer() {
 
-
-
-
+        if(player!=null){
+            return;
+        }
 
         simpleExoPlayerView.setUseController(true);
         simpleExoPlayerView.requestFocus();
@@ -192,17 +201,30 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
         System.out.println("Look ma, it's a view!");
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             tvDetails = (TextView) view.findViewById(R.id.tvDetails);
+            thumbnailView = (ImageView) view.findViewById(R.id.thumbnailStepsView);
             if (step == null && savedInstanceState != null && savedInstanceState.getString("step") != null) {
                 step = gson.fromJson(savedInstanceState.getString("step"), Step.class);
             }
             // update view
             if(step != null) {
                 tvDetails.setText(step.getDescription());
+                if(step.getThumbnailURL().length() > 0) {
+                    Picasso.with(getActivity().getApplicationContext()).load(step.getThumbnailURL()).into(thumbnailView);
+                } else {
+                    if(thumbnailView != null)
+                        thumbnailView.setVisibility(View.GONE);
+                }
             }
         } else {
             tvDetails = (TextView) view.findViewById(R.id.tvDetails);
             if(tvDetails != null && step != null) {
                 tvDetails.setText(step.getDescription());
+            }
+            if(step.getThumbnailURL().length() > 0) {
+                Picasso.with(getActivity().getApplicationContext()).load(step.getThumbnailURL()).into(thumbnailView);
+            } else {
+                if(thumbnailView != null)
+                    thumbnailView.setVisibility(View.GONE);
             }
         }
         initializePlayer();

@@ -13,6 +13,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -56,6 +58,7 @@ import static com.google.android.exoplayer2.ExoPlayerLibraryInfo.TAG;
 public class RecipeDetailFragment extends android.support.v4.app.Fragment implements  View.OnClickListener, VideoRendererEventListener {
 
     TextView tvDetails;
+    ImageView thumbnailView;
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
     Step step = null;
@@ -139,10 +142,18 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
         }
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             tvDetails = (TextView) view.findViewById(R.id.tvDetails);
+            thumbnailView = (ImageView) view.findViewById(R.id.thumbnailView);
 
             // update view
             if(step != null) {
                 tvDetails.setText(step.getDescription());
+                if(step.getThumbnailURL().length() > 0) {
+                    Picasso.with(getContext()).load(step.getThumbnailURL()).into(thumbnailView);
+                    System.out.println("Sounds good");
+                } else {
+                    if(thumbnailView != null)
+                        thumbnailView.setVisibility(View.GONE);
+                }
             }
         } else {
             View flContainerView2 = getActivity().findViewById(R.id.flContainer2);
@@ -181,6 +192,14 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
     public void updateView(int position){
 
         tvDetails.setText(step.getDescription());
+
+        if(step.getThumbnailURL().length() > 0) {
+            Picasso.with(bigView.getContext()).load(step.getThumbnailURL()).into(thumbnailView);
+        } else {
+            if(thumbnailView != null)
+                thumbnailView.setVisibility(View.GONE);
+        }
+
         if(step.getVideoURL() != null && !step.getVideoURL().equals("")) {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             Uri mp4VideoUri = Uri.parse(step.getVideoURL());
@@ -221,6 +240,9 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
     }
 
     private void initializePlayer() {
+        if(player!=null){
+            return;
+        }
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);

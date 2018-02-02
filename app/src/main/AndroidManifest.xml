@@ -23,7 +23,6 @@
         <!-- A child of the main activity -->
         <activity
             android:name=".DetailActivity"
-            android:configChanges="orientation"
             android:parentActivityName=".MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
