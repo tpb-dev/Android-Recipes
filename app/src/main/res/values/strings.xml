@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android-Recipes</string>
+    <string name="app_name">Android Recipes</string>
     <string name="recipeURL">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json</string>
     <string name="title_step_list">Steps</string>
     <string name="title_step_detail">Step Detail</string>

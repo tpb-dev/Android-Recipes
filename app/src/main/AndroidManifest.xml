@@ -42,7 +42,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/favorite_recipe_widget_info" />
+                android:resource="@xml/my_favorite_recipe_widget_info" />
         </receiver>
         <service android:name=".MyFavoriteRecipeWidgetRemoteViewsService"
             android:enabled="true"
