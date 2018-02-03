@@ -155,9 +155,11 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
                 @Override
                 public void onPlayerError(ExoPlaybackException error) {
                     Log.v(TAG, "Listener-onPlayerError...");
-                    player.stop();
-                    player.prepare(loopingSource);
-                    player.setPlayWhenReady(true);
+                    if(player != null) {
+                        player.stop();
+                        player.prepare(loopingSource);
+                        player.setPlayWhenReady(true);
+                    }
                 }
 
                 @Override

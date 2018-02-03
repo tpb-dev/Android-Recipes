@@ -59,9 +59,11 @@ public class TestAllActivity {
     public void goToDetailActivity() {
         Recipe recipe = new Recipe();
         recipe = new Recipe(1111L, "aaa", 1, "srhserherh");
-        List<Step> steps1 = Lists.newArrayList(new Step(44L, 44L, "aa",
+        List<Step> steps1 = Lists.newArrayList(new Step(44L, 44L, "aa3",
                 "descNumberOne", "gaweg", "segerg"), new Step(45L, 45L, "aa11",
-                "de33sc", "gaw2eg", "seger2g"));
+                "de33sc", "gaw2eg", "seger2g"), new Step(46L, 46L, "aa2",
+                "descNumberOne1", "gaweg1", "segerg1"), new Step(47L, 47L, "aa1",
+                "descNumberOne2", "gaweg2", "segerg2"));
         recipe.setSteps(steps1);
         onView(withText("Cheesecake")).perform(click());
 
