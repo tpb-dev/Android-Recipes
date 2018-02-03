@@ -48,7 +48,7 @@ import static com.google.android.exoplayer2.ExoPlayerLibraryInfo.TAG;
 public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragment implements VideoRendererEventListener {
         //implements VideoRendererEventListener {
 
-    String position;
+    Long position;
     TextView tvDetails;
     ImageView thumbnailView;
     private SimpleExoPlayerView simpleExoPlayerView;
@@ -63,8 +63,7 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
         gson = new Gson();
 
         if(getArguments() != null) {
-            position = getArguments().getString("step", null);
-            step = gson.fromJson(position, Step.class);
+            step = gson.fromJson(getArguments().getString("step", null), Step.class);
         }
     }
 
@@ -89,17 +88,18 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
             if (thumbnailView != null)
                 thumbnailView.setVisibility(View.GONE);
         }
-        player=null;
-        initializePlayer();
+        if(step != null && step.getVideoURL() != null && !step.getVideoURL().equals("")) {
+            initializePlayer();
+        } else {
+            simpleExoPlayerView.setVisibility(View.GONE);
+        }
     }
 
     public void initializePlayer() {
 
-        if (player != null) {
+        if(player != null) {
             return;
         }
-
-
 
         Uri mp4VideoUri = Uri.parse(step.getVideoURL());
 
@@ -245,35 +245,6 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
 
 
 
-    /*
-    // Activity is calling this to update view on Fragment
-    public void updateView(int position){
-
-        tvDetails.setText(step.getDescription());
-        if(step.getVideoURL() != null && !step.getVideoURL().equals("")) {
-            simpleExoPlayerView.setVisibility(View.VISIBLE);
-            Uri mp4VideoUri = Uri.parse(step.getVideoURL());
-
-            //Measures bandwidth during playback. Can be null if not required.
-            DefaultBandwidthMeter bandwidthMeterA = new DefaultBandwidthMeter();
-//Produces DataSource instances through which media data is loaded.
-            DefaultHttpDataSourceFactory dataSource = new DefaultHttpDataSourceFactory(
-                    Util.getUserAgent(getActivity(), "your-user-agent"));
-            ExtractorMediaSource mediaSource = new ExtractorMediaSource.Factory(dataSource)
-                    .createMediaSource(mp4VideoUri, null, null);
-            final LoopingMediaSource loopingSource;
-            loopingSource = new LoopingMediaSource(mediaSource);
-
-            player.prepare(loopingSource);
-
-
-            player.setPlayWhenReady(true); //run file/link when ready to play.
-        } else {
-            simpleExoPlayerView.setVisibility(View.INVISIBLE);
-        }
-
-    }
-    */
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -353,9 +324,7 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
         super.onPause();
 
         Log.v(TAG, "onPause()...");
-        if(player != null) {
-            player.release();
-        }
+        releasePlayer();
     }
 
     @Override
@@ -364,6 +333,15 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
         Log.v(TAG, "onDestroy()...");
         if(player != null) {
             player.release();
+        }
+    }
+
+    public void releasePlayer() {
+        if (player != null) {
+            position = player.getCurrentPosition();
+            player.stop();
+            player.release();
+            player = null;
         }
     }
 

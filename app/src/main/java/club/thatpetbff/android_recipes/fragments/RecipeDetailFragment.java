@@ -181,7 +181,6 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
     public void updateView(int position){
 
         releasePlayer();
-
         initializePlayer();
 
         tvDetails.setText(step.getDescription());
