@@ -235,7 +235,11 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
                     thumbnailView.setVisibility(View.GONE);
             }
         }
-        initializePlayer();
+        if(step != null && step.getVideoURL() != null && !step.getVideoURL().equals("")) {
+            initializePlayer();
+        } else {
+            simpleExoPlayerView.setVisibility(View.GONE);
+        }
         System.out.println("Whatsapp");
     }
 

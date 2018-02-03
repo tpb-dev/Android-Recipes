@@ -169,27 +169,20 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
             simpleExoPlayerView = new SimpleExoPlayerView(getActivity());
             simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.playerView);
         }
-        /*
-        else {
 
-
-            }
-
-        } */
-
-        initializePlayer();
-
-
-
-
-
-//for listening to resolution change and  outputing the resolution
-        //player.setVideoDebugListener(getActivity());
-
+        if(step != null && step.getVideoURL() != null && !step.getVideoURL().equals("")) {
+            initializePlayer();
+        } else {
+            simpleExoPlayerView.setVisibility(View.GONE);
+        }
     }
 
     // Activity is calling this to update view on Fragment
     public void updateView(int position){
+
+        releasePlayer();
+
+        initializePlayer();
 
         tvDetails.setText(step.getDescription());
 
@@ -440,12 +433,7 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
     public void onPause() {
         super.onPause();
         Log.v(TAG, "onPause()...");
-        if (player != null) {
-            position = player.getCurrentPosition();
-            player.stop();
-            player.release();
-            player = null;
-        }
+        releasePlayer();
     }
 
     @Override
@@ -454,6 +442,15 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment implem
         Log.v(TAG, "onDestroy()...");
         if(player != null)
             player.release();
+    }
+
+    public void releasePlayer() {
+        if (player != null) {
+            position = player.getCurrentPosition();
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
 
 }

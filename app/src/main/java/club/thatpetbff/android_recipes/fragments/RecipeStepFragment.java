@@ -66,13 +66,13 @@ public class RecipeStepFragment extends android.support.v4.app.Fragment {
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
         } else {
             mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
-
-
         }
+
         mAdapter = new RecipeStepAdapter(mContext, new RecipeStepAdapter.OnItemClickListener() {
             @Override public void onItemClick(List<Ingredient> item, int pos) {
                 //Insert shit here
@@ -104,7 +104,7 @@ public class RecipeStepFragment extends android.support.v4.app.Fragment {
             ((DetailActivity) getActivity()).setIngredientList(ingredients);
         }
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (tabletSize || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             FragmentManager fm = getActivity().getSupportFragmentManager();
             recipeDetailWithStepsFragment = (RecipeDetailWithStepsFragment) fm.findFragmentByTag("recipeDetailWithStepsFragment");
             if(recipeDetailWithStepsFragment == null) {
@@ -157,7 +157,8 @@ public class RecipeStepFragment extends android.support.v4.app.Fragment {
             recipeDetailWithStepsFragment.setArguments(args);
         }
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if(isShowing) {
                 recipeDetailWithStepsFragment.updateFragment(step);
             } else {
@@ -188,7 +189,8 @@ public class RecipeStepFragment extends android.support.v4.app.Fragment {
         secondFragment.setArguments(args);          // (1) Communicate with Fragment using Bundle
 
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flContainer2, secondFragment) // replace flContainer
