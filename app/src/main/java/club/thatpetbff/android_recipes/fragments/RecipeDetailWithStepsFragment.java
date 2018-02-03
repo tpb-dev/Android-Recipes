@@ -80,28 +80,26 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
     public void updateFragment(Step thisStep) {
         step = thisStep;
         // update view
-        if(step != null) {
+        if (step != null) {
             tvDetails.setText(step.getDescription());
         }
-        if(step.getThumbnailURL().length() > 0) {
+        if (step.getThumbnailURL().length() > 0) {
             Picasso.with(getActivity().getApplicationContext()).load(step.getThumbnailURL()).into(thumbnailView);
         } else {
-            if(thumbnailView != null)
+            if (thumbnailView != null)
                 thumbnailView.setVisibility(View.GONE);
         }
+        player=null;
         initializePlayer();
     }
 
     public void initializePlayer() {
 
-        if(player!=null){
+        if (player != null) {
             return;
         }
 
-        simpleExoPlayerView.setUseController(true);
-        simpleExoPlayerView.requestFocus();
 
-        simpleExoPlayerView.setPlayer(player);
 
         Uri mp4VideoUri = Uri.parse(step.getVideoURL());
 
@@ -119,6 +117,12 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
                     .createMediaSource(mp4VideoUri, null, null);
             final LoopingMediaSource loopingSource;
             loopingSource = new LoopingMediaSource(mediaSource);
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+            LoadControl loadControl = new DefaultLoadControl();
+            player = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
 
             player.prepare(loopingSource);
 
@@ -182,6 +186,10 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
             });
 
             player.setPlayWhenReady(true); //run file/link when ready to play.
+            simpleExoPlayerView.setUseController(true);
+            simpleExoPlayerView.requestFocus();
+
+            simpleExoPlayerView.setPlayer(player);
         } else {
             simpleExoPlayerView.setVisibility(View.GONE);
         }
