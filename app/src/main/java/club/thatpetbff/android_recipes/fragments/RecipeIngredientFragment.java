@@ -67,10 +67,11 @@ public class RecipeIngredientFragment extends android.support.v4.app.Fragment  {
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         if (tabletSize || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            View flContainerView2 = getActivity().findViewById(R.id.flContainer2);
-            flContainerView2.setVisibility(View.GONE);
+
             mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
         } else {
+            //View flContainerView2 = getActivity().findViewById(R.id.flContainer2);
+            //flContainerView2.setVisibility(View.GONE);
             mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
         }
         mAdapter = new RecipeIngredientAdapter(mContext, new RecipeIngredientAdapter.OnItemClickListener() {

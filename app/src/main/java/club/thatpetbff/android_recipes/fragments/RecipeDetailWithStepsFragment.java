@@ -97,10 +97,6 @@ public class RecipeDetailWithStepsFragment extends android.support.v4.app.Fragme
 
     public void initializePlayer() {
 
-        if(player != null) {
-            return;
-        }
-
         Uri mp4VideoUri = Uri.parse(step.getVideoURL());
 
 
